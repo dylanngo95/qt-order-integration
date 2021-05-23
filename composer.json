@@ -1,0 +1,21 @@
+{
+  "name": "qt/order-integration",
+  "version": "1.0.0",
+  "description": "N/A",
+  "type": "magento2-module",
+  "require": {
+    "php": ">=7.4.0",
+    "magento/framework": "*"
+  },
+  "license": [
+    "Proprietary"
+  ],
+  "autoload": {
+    "files": [
+      "registration.php"
+    ],
+    "psr-4": {
+      "QT\\OrderIntegration\\": ""
+    }
+  }
+}
