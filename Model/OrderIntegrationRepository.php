@@ -8,8 +8,10 @@ namespace QT\OrderIntegration\Model;
 use Magento\Framework\Exception\CouldNotSaveException;
 use QT\OrderIntegration\Api\Data\OrderIntegrationInterface;
 use QT\OrderIntegration\Api\OrderIntegrationRepositoryInterface;
+use QT\OrderIntegration\Helper\Config;
 use QT\OrderIntegration\Model\ResourceModel\OrderIntegration as ObjectResourceModel;
 use QT\OrderIntegration\Model\OrderIntegrationFactory as ObjectModelFactory;
+use QT\OrderIntegration\Model\ResourceModel\OrderIntegration\Collection as OrderIntegrationCollection;
 
 /**
  * Class OrderIntegrationRepository
@@ -28,17 +30,33 @@ class OrderIntegrationRepository implements OrderIntegrationRepositoryInterface
     private OrderIntegrationFactory $objectModelFactory;
 
     /**
+     * @var OrderIntegrationCollection
+     */
+    private OrderIntegrationCollection $orderIntegrationCollection;
+
+    /**
+     * @var Config
+     */
+    private Config $config;
+
+    /**
      * OrderIntegrationRepository constructor.
      * @param ObjectResourceModel $objectResourceModel
      * @param OrderIntegrationFactory $objectModelFactory
+     * @param OrderIntegrationCollection $orderIntegrationCollection
+     * @param Config $config
      */
     public function __construct(
         ObjectResourceModel $objectResourceModel,
-        ObjectModelFactory $objectModelFactory
+        ObjectModelFactory $objectModelFactory,
+        OrderIntegrationCollection $orderIntegrationCollection,
+        Config $config
     )
     {
         $this->objectResourceModel = $objectResourceModel;
         $this->objectModelFactory = $objectModelFactory;
+        $this->orderIntegrationCollection = $orderIntegrationCollection;
+        $this->config = $config;
     }
 
     /**
@@ -56,8 +74,18 @@ class OrderIntegrationRepository implements OrderIntegrationRepositoryInterface
         }
     }
 
-    public function getOrderIntegrationNew(): array
+    /**
+     * Get Order Integration New.
+     *
+     * @return array
+     */
+    public function getOrderIntegrationNew(): ?array
     {
-        // TODO: Implement getOrderIntegrationNew() method.
+        $batchSize = $this->config->getBatchSize() ?? 500;
+        $result = $this->orderIntegrationCollection
+            ->addFieldToSelect(['entity_id'])
+            ->addFieldToFilter('status', ['eq' => OrderIntegrationInterface::STATUS_NEW])
+            ->setPageSize($batchSize);
+        return $result->getItems() ?? null;
     }
 }

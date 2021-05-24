@@ -20,5 +20,5 @@ interface OrderIntegrationRepositoryInterface
     /**
      * @return  \QT\OrderIntegration\Api\Data\OrderIntegrationInterface[]
      */
-    public function getOrderIntegrationNew(): array;
+    public function getOrderIntegrationNew(): ?array;
 }

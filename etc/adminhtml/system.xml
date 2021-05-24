@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="qt" translate="label" sortOrder="10">
+            <label>QT</label>
+        </tab>
+        <section id="order_integration" translate="label" sortOrder="10" showInDefault="1">
+            <label>Order Integration</label>
+            <tab>qt</tab>
+            <resource>QT_OrderIntegration::config</resource>
+            <group id="general" translate="label" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>General</label>
+                <field id="enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1"
+                       showInStore="1" canRestore="1">
+                    <label>Enable</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="batch_size" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="0"
+                       showInStore="0">
+                    <label>Batch Size</label>
+                </field>
+                <field id="log_payload" translate="label" type="select" sortOrder="30" showInDefault="1"
+                       showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Log Request Payload</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+            <group id="api_credentials" translate="label" sortOrder="20" showInDefault="1" showInWebsite="0"
+                   showInStore="0">
+                <label>API Credentials</label>
+                <field id="api_endpoint_url" translate="label" type="text" sortOrder="10" showInDefault="1"
+                       showInWebsite="0" showInStore="0">
+                    <label>Base URL</label>
+                </field>
+                <field id="token" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="0"
+                       showInStore="0">
+                    <label>Token</label>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

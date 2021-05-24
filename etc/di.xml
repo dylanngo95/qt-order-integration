@@ -5,4 +5,11 @@
                 type="QT\OrderIntegration\Model\OrderIntegration"/>
     <preference for="QT\OrderIntegration\Api\OrderIntegrationRepositoryInterface"
                 type="QT\OrderIntegration\Model\OrderIntegrationRepository"/>
+    <type name="Magento\Framework\Console\CommandList">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="qt_order_integration_order" xsi:type="object">QT\OrderIntegration\Console\Command\SynchronousOrderToCMS</item>
+            </argument>
+        </arguments>
+    </type>
 </config>
