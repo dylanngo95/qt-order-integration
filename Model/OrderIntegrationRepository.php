@@ -75,6 +75,45 @@ class OrderIntegrationRepository implements OrderIntegrationRepositoryInterface
     }
 
     /**
+     * Get By Id.
+     *
+     * @param int $id
+     * @return OrderIntegrationInterface|null
+     */
+    public function getById(int $id): ?OrderIntegrationInterface
+    {
+        $customSalesOrder = $this->objectModelFactory->create();
+        $this->objectResourceModel->load($customSalesOrder, $id);
+        if (!$customSalesOrder->getEntityId()) {
+            return null;
+        }
+        return $customSalesOrder;
+    }
+
+    /**
+     * Get By Id.
+     *
+     * @param int $id
+     * @param int $status
+     * @param string|null $comment
+     * @return OrderIntegrationInterface|null
+     * @throws \Magento\Framework\Exception\AlreadyExistsException
+     */
+    public function updateStatusById(int $id, int $status, ?string $comment = null): ?OrderIntegrationInterface
+    {
+        /** @var OrderIntegrationInterface $customSalesOrder */
+        $customSalesOrder = $this->objectModelFactory->create();
+        $this->objectResourceModel->load($customSalesOrder, $id);
+        if (!$customSalesOrder->getEntityId()) {
+            return null;
+        }
+        $customSalesOrder->setStatus($status);
+        $customSalesOrder->setComment($comment);
+        $this->objectResourceModel->save($customSalesOrder);
+        return $customSalesOrder;
+    }
+
+    /**
      * Get Order Integration New.
      *
      * @return array
