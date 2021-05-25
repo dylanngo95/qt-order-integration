@@ -16,6 +16,7 @@ class Config extends AbstractHelper
 {
     const ORDER_INTEGRATION_ENABLE = 'order_integration/general/enabled';
     const ORDER_INTEGRATION_BATCH_SIZE = 'order_integration/general/batch_size';
+    const ORDER_INTEGRATION_MAX_TRY = 'order_integration/general/max_try';
     const ORDER_INTEGRATION_LOG_PAYLOAD = 'order_integration/general/log_payload';
     const ORDER_INTEGRATION_ENDPOINT_URL = 'order_integration/api_credentials/api_endpoint_url';
     const ORDER_INTEGRATION_TOKEN = 'order_integration/api_credentials/token';
@@ -88,6 +89,19 @@ class Config extends AbstractHelper
             $storeId
         );
     }
+
+    /**
+     * @param null $storeId
+     * @return mixed
+     */
+    public function getMaxTry($storeId = null)
+    {
+        return $this->getConfigValue(
+            self::ORDER_INTEGRATION_MAX_TRY,
+            $storeId
+        );
+    }
+
 
     /**
      * Get Endpoint Url.

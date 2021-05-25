@@ -18,6 +18,7 @@ interface OrderIntegrationInterface
     const ORDER_ID = "order_id";
     const STATUS = "status";
     const COMMENT = "comment";
+    const MAX_TRY = "max_try";
     const CREATED_AT = "created_at";
     const UPDATED_AT = "updated_at";
 
@@ -105,6 +106,22 @@ interface OrderIntegrationInterface
      * @return void
      */
     public function setComment(?string $comment): void;
+
+    /**
+     * Getter for MaxTry.
+     *
+     * @return int|null
+     */
+    public function getMaxTry(): ?int;
+
+    /**
+     * Setter for MaxTry.
+     *
+     * @param int|null $maxTry
+     *
+     * @return void
+     */
+    public function setMaxTry(?int $maxTry): void;
 
     /**
      * Getter for CreatedAt.

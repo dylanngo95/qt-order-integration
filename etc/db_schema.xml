@@ -6,6 +6,7 @@
         <column xsi:type="smallint" name="store_id" unsigned="true" nullable="false" padding="5" default="0" comment="Store ID"/>
         <column xsi:type="smallint" name="order_id" unsigned="true" nullable="false" comment="Order ID"/>
         <column xsi:type="smallint" name="status" nullable="true" padding="2" comment="Status"/>
+        <column xsi:type="smallint" name="max_try" nullable="true" padding="5" comment="Max Retry Count"/>
         <column xsi:type="text" name="comment" nullable="true" comment="Comment"/>
         <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Creation Time"/>
         <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="Update Time"/>

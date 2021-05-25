@@ -114,6 +114,22 @@ class OrderIntegration extends AbstractModel implements OrderIntegrationInterfac
     /**
      * @inheritDoc
      */
+    public function getMaxTry(): ?int
+    {
+        return (int) $this->getData(self::MAX_TRY);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setMaxTry(?int $maxTry): void
+    {
+        $this->setData(self::MAX_TRY, $maxTry);
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function getCreatedAt(): ?string
     {
         return $this->getData(self::CREATED_AT);

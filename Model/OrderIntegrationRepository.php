@@ -11,7 +11,7 @@ use QT\OrderIntegration\Api\OrderIntegrationRepositoryInterface;
 use QT\OrderIntegration\Helper\Config;
 use QT\OrderIntegration\Model\ResourceModel\OrderIntegration as ObjectResourceModel;
 use QT\OrderIntegration\Model\OrderIntegrationFactory as ObjectModelFactory;
-use QT\OrderIntegration\Model\ResourceModel\OrderIntegration\Collection as OrderIntegrationCollection;
+use QT\OrderIntegration\Model\ResourceModel\OrderIntegration\CollectionFactory as OrderIntegrationCollectionFactory;
 
 /**
  * Class OrderIntegrationRepository
@@ -30,9 +30,9 @@ class OrderIntegrationRepository implements OrderIntegrationRepositoryInterface
     private OrderIntegrationFactory $objectModelFactory;
 
     /**
-     * @var OrderIntegrationCollection
+     * @var OrderIntegrationCollectionFactory
      */
-    private OrderIntegrationCollection $orderIntegrationCollection;
+    private OrderIntegrationCollectionFactory $orderIntegrationCollectionFactory;
 
     /**
      * @var Config
@@ -43,19 +43,19 @@ class OrderIntegrationRepository implements OrderIntegrationRepositoryInterface
      * OrderIntegrationRepository constructor.
      * @param ObjectResourceModel $objectResourceModel
      * @param OrderIntegrationFactory $objectModelFactory
-     * @param OrderIntegrationCollection $orderIntegrationCollection
+     * @param OrderIntegrationCollectionFactory $orderIntegrationCollectionFactory
      * @param Config $config
      */
     public function __construct(
         ObjectResourceModel $objectResourceModel,
         ObjectModelFactory $objectModelFactory,
-        OrderIntegrationCollection $orderIntegrationCollection,
+        OrderIntegrationCollectionFactory $orderIntegrationCollectionFactory,
         Config $config
     )
     {
         $this->objectResourceModel = $objectResourceModel;
         $this->objectModelFactory = $objectModelFactory;
-        $this->orderIntegrationCollection = $orderIntegrationCollection;
+        $this->orderIntegrationCollectionFactory = $orderIntegrationCollectionFactory;
         $this->config = $config;
     }
 
@@ -107,8 +107,14 @@ class OrderIntegrationRepository implements OrderIntegrationRepositoryInterface
         if (!$customSalesOrder->getEntityId()) {
             return null;
         }
+        if ($status === OrderIntegrationInterface::STATUS_FAIL) {
+            $maxTry = $customSalesOrder->getMaxTry() + 1;
+            $customSalesOrder->setMaxTry($maxTry);
+        }
+        if ($comment) {
+            $customSalesOrder->setComment($comment);
+        }
         $customSalesOrder->setStatus($status);
-        $customSalesOrder->setComment($comment);
         $this->objectResourceModel->save($customSalesOrder);
         return $customSalesOrder;
     }
@@ -121,9 +127,26 @@ class OrderIntegrationRepository implements OrderIntegrationRepositoryInterface
     public function getOrderIntegrationNew(): ?array
     {
         $batchSize = $this->config->getBatchSize() ?? 500;
-        $result = $this->orderIntegrationCollection
+        $result = $this->orderIntegrationCollectionFactory
+            ->create()
             ->addFieldToSelect(['entity_id'])
             ->addFieldToFilter('status', ['eq' => OrderIntegrationInterface::STATUS_NEW])
+            ->setPageSize($batchSize);
+        return $result->getItems() ?? null;
+    }
+
+    /**
+     * Get Order Integration Fail.
+     *
+     * @return array
+     */
+    public function getOrderIntegrationFail(): ?array
+    {
+        $batchSize = $this->config->getBatchSize() ?? 500;
+        $result = $this->orderIntegrationCollectionFactory
+            ->create()
+            ->addFieldToSelect(['entity_id'])
+            ->addFieldToFilter('status', ['eq' => OrderIntegrationInterface::STATUS_FAIL])
             ->setPageSize($batchSize);
         return $result->getItems() ?? null;
     }
