@@ -104,7 +104,7 @@ class SynchronousOrderToCMS extends AbstractCommand
             $orderIntegrationItem->getEntityId(),
             OrderIntegrationInterface::STATUS_PROCESSING
         );
-        $response = $this->synchronousOrderRequest->synchronousOrderById($orderIntegrationItem->getEntityId());
+        $response = $this->synchronousOrderRequest->synchronousOrderById($orderIntegrationItem->getOrderId());
         if ($response->getStatusCode() !== self::RESPONSE_SUCCESS) {
             $this->orderIntegrationRepository->updateStatusById(
                 $orderIntegrationItem->getEntityId(),
