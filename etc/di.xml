@@ -1,15 +1,35 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <!-- @api -->
     <preference for="QT\OrderIntegration\Api\Data\OrderIntegrationInterface"
                 type="QT\OrderIntegration\Model\OrderIntegration"/>
     <preference for="QT\OrderIntegration\Api\OrderIntegrationRepositoryInterface"
                 type="QT\OrderIntegration\Model\OrderIntegrationRepository"/>
+    <!-- @command -->
     <type name="Magento\Framework\Console\CommandList">
         <arguments>
             <argument name="commands" xsi:type="array">
                 <item name="qt_order_integration_order" xsi:type="object">QT\OrderIntegration\Console\Command\SynchronousOrderToCMS</item>
             </argument>
+        </arguments>
+    </type>
+    <!-- @logger -->
+    <virtualType name="QT\OrderIntegration\Logger\VirtualLoggerHandler" type="Magento\Framework\Logger\Handler\Base">
+        <arguments>
+            <argument name="fileName" xsi:type="string">/var/log/qt-synchronous-order.log</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="QT\OrderIntegration\Logger\VirtualLogger" type="Magento\Framework\Logger\Monolog">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="system" xsi:type="object">QT\OrderIntegration\Logger\VirtualLoggerHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="QT\OrderIntegration\Logger\Logger">
+        <arguments>
+            <argument name="logger" xsi:type="object">QT\OrderIntegration\Logger\VirtualLogger</argument>
         </arguments>
     </type>
 </config>

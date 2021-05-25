@@ -10,6 +10,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\ResponseFactory;
 use Magento\Framework\Webapi\Rest\Request;
+use QT\OrderIntegration\Logger\Logger;
 
 /**
  * Class ClientRequest
@@ -21,13 +22,17 @@ class ClientRequest
 
     private ResponseFactory $responseFactory;
 
+    private Logger $logger;
+
     public function __construct(
         ClientFactory $clientFactory,
-        ResponseFactory $responseFactory
+        ResponseFactory $responseFactory,
+        Logger $logger
     )
     {
         $this->clientFactory = $clientFactory;
         $this->responseFactory = $responseFactory;
+        $this->logger = $logger;
     }
 
     /**
@@ -50,6 +55,16 @@ class ClientRequest
         $client = $this->clientFactory->create(['config' => [
             'base_uri' => $baseUri
         ]]);
+
+        $this->logger->logInfo(
+            'logging request:',
+            [
+                'requestMethod' => $requestMethod,
+                'baseUri' => $baseUri,
+                'uriEndpoint' => $uriEndpoint,
+                'params' => $params
+            ]
+        );
 
         try {
             $response = $client->request(
