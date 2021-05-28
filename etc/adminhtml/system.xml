@@ -2,12 +2,12 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
     <system>
-        <tab id="qt" translate="label" sortOrder="10">
+        <tab id="qtc" translate="label" sortOrder="10">
             <label>QT</label>
         </tab>
         <section id="order_integration" translate="label" sortOrder="10" showInDefault="1">
             <label>Order Integration</label>
-            <tab>qt</tab>
+            <tab>qtc</tab>
             <resource>QT_OrderIntegration::config</resource>
             <group id="general" translate="label" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>General</label>
